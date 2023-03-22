@@ -12,7 +12,6 @@ form.addEventListener('submit', function(event){
     const dataFinal = "2023-01-01";
     const repositorio = trataUrl("https://github.com/frankwco/loja");
     
-    console.log("teste");
     buscarCommits(repositorio, dataInicial, dataFinal);
 });
 
@@ -22,7 +21,6 @@ function buscarCommits(repositorio, dataInicial, dataFinal){
         commits => preparaDados(commits)
                 
             );    
-        console.log(new Date());
 }
 
 
@@ -38,7 +36,6 @@ function preparaDados(commits){
             commitsPorDia[dataCommit] = {quantidade:1, data:dataCommit,author:authorCommit,message:messageCommit};
         }
     });
-    console.log(commitsPorDia);
     
     const commitsPordiaArray = Object.keys(commitsPorDia).map(dataCommit=>{
         return {data:dataCommit, quantidade:commitsPorDia[dataCommit].quantidade,author:commitsPorDia[dataCommit].author,message:commitsPorDia[dataCommit].message};

@@ -6,9 +6,15 @@ form.addEventListener('submit', function(event){
     // const dataFinal = document.querySelector("#dataFinal").value;
     // const repositorio = trataUrl(urlDoGithub);
 
+
+    
     const dataInicial = "2019-01-01";
     const dataFinal = "2023-01-01";
     const repositorio = trataUrl("https://github.com/frankwco/loja");
+    
+    if (!repositorio.value || !dataInicial.value || !dataFinal.value){
+        alert('Por favor, preencha todos os campos.');
+    }
     console.log("teste");
     buscarCommits(repositorio, dataInicial, dataFinal);
 });

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exemplo de tabela com JSON</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #ddd;
+      }
+
+      .commit-cell {
+        position: relative;
+      }
+
+      .commit-tooltip {
+        display: none;
+        position: absolute;
+        background-color: #f2f2f2;
+        border: 1px solid black;
+        padding: 8px;
+        z-index: 1;
+      }
+
+      .commit-cell:hover .commit-tooltip {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Data Inicial</th>
+          <th>Data Final</th>
+          <th>Quantidade de Commits</th>
+          <th>Repositórios</th>
+          <th>Percentual de Commits</th>
+          <th>Resumo dos Commits</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+
+    <script>
+      fetch("http://localhost:8080/commit")
+        .then(response => response.json())
+        .then(jsonData => {
+          const tableBody = document.getElementById("table-body");
+
+          jsonData.forEach(data => {
+            const row = tableBody.insertRow();
+
+            row.insertCell().appendChild(document.createTextNode(data.nameUser));
+            row.insertCell().appendChild(document.createTextNode(data.initDate));
+            row.insertCell().appendChild(document.createTextNode(data.finalDate));
+            row.insertCell().appendChild(document.createTextNode(data.countCommit));
+            row.insertCell().appendChild(document.createTextNode(data.repositories.map(repo => repo.name).join(", ")));
+            row.insertCell().appendChild(document.createTextNode(data.percentualCommit));
+            row.insertCell().appendChild(document.createTextNode(data.resumeCommit.join(", ")));
+          });
+        })
+        .catch(error => {
+          console.error("Erro ao obter o JSON:", error);
+        });
+    </script>
+    <script>
+      // Adiciona um tooltip aos commits
+      const commitCells = document.querySelectorAll(".commit-cell");
+      commitCells.forEach(cell => {
+        const tooltip = document.createElement("div");
+        tooltip.className = "commit-tooltip";
+        tooltip.textContent = cell.dataset.commits;
+        cell.appendChild(tooltip);
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
